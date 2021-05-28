@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://wwww.ultraq.net.nz/thymeleaf/Layout"
+      layout:decorator="Template">
+<head>
+<meta charset="UTF-8">
+
+<title>Page patients</title>
+</head>
+<body>
+
+<div layout:fragment="pageContent">
+   
+ <div class="container mt-5">
+ 
+ 
+ 
+ <div class="card card-warning">
+ 
+   <div class="card-header text-center">
+   
+     <b>Listes des patients</b> 
+   </div>
+   
+   <div class="card-body">
+       
+         
+   <!-- 
+             <form th:action="@{index}"  method="get">
+              <div class="pb-2">
+              
+                <label>Recherche</label>
+                
+                <input type="text" name="Motcle" th:value="${Motcle}">
+                
+                
+                <button class="btn btn-info btn-sm">chercher</button>
+             </div>
+             </form> -->
+             
+ <nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <form class="d-flex"th:action="@{index}" method="get">
+      <input class="form-control me-2" name="Motcle" type="search" placeholder="Search" aria-label="Search" th:value="${Motcle}">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
+        
+             
+             
+   
+             <table class="table table-bordered table-light text-center">
+                 <thead>
+                        <tr>
+                          <th> Id</th>  <th>Name</th>   <th>dateNaissance</th>   <th>Malade</th>   <th>Score</th>  <th>Editer</th><th>Supprimer</th>
+                        </tr>
+                 </thead>
+                 <tbody>
+     
+                       <tr th:each="p:${patient}">
+  
+                           <td th:text="${p.id}"></td>
+                          <td th:text="${p.name}"></td>
+                           <td th:text="${p.dateNaissance}"></td>
+                          <td th:text="${p.malade}"></td>
+                           <td th:text="${p.score}"></td>
+                           <td><a th:href="@{edite(id=${p.id})}" class="btn btn-success">edit</a></td>
+                           <td><a th:href="@{delesupprimer(id=${p.id},Motcle=${Motcle},
+                           page=${currentPage},size=${size})}" class="btn btn-danger">delete</a></td>
+                           
+                      </tr>
+ 
+                  </tbody>
+            </table>
+   <ul class="nav nav-pills">
+   
+   <li th:each="p,status:${page}">
+   
+   
+    <a th:class="${status.index==currentPage?'btn btn-secondary':'btn'}" th:href="@{index(Motcle=${Motcle},
+    page=${status.index},size=${size})}" 
+    class="btn btn-outline-dark" th:text="${status.index}" style="margin-right:5px;"></a>
+    
+    
+   <!--  <a th:class="${status.index==currentPage?'btn btn-primary':'btn'}"
+     class="btn" th:href="@{product(page=${status.index},
+ size=${size},motcles=${motcles})}"  
+    th:text="${status.index}"></a> -->
+ 
+   <li>
+   
+   </ul>
+   
+  </div>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>
+ 
+</div>
+</div>
+</body>
+</html>
