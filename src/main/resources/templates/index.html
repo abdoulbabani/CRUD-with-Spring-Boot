@@ -65,7 +65,7 @@
                            <td th:text="${p.dateNaissance}"></td>
                           <td th:text="${p.malade}"></td>
                            <td th:text="${p.score}"></td>
-                           <td><a th:href="@{edite(id=${p.id})}" class="btn btn-success">edit</a></td>
+                           <td><a th:href="@{Update(id=${p.id})}" class="btn btn-success">edit</a></td>
                            <td><a th:href="@{delesupprimer(id=${p.id},Motcle=${Motcle},
                            page=${currentPage},size=${size})}" class="btn btn-danger">delete</a></td>
                            
