@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" 
       xmlns:layout="http://wwww.ultraq.net.nz/thymeleaf/Layout"
-      layout:decorator="Template">
+      layout:decorator="Template"
+       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
 
@@ -53,7 +54,7 @@
              <table class="table table-bordered table-light text-center">
                  <thead>
                         <tr>
-                          <th> Id</th>  <th>Name</th>   <th>dateNaissance</th>   <th>Malade</th>   <th>Score</th>  <th>Editer</th><th>Supprimer</th>
+                          <th> Id</th>  <th>Name</th>   <th>dateNaissance</th>   <th>Malade</th>   <th>Score</th>  <th sec:authorize="hasRole('ROLE_ADMIN')">Editer</th><th sec:authorize="hasRole('ROLE_ADMIN')">Supprimer</th>
                         </tr>
                  </thead>
                  <tbody>
@@ -65,8 +66,9 @@
                            <td th:text="${p.dateNaissance}"></td>
                           <td th:text="${p.malade}"></td>
                            <td th:text="${p.score}"></td>
-                           <td><a th:href="@{Update(id=${p.id})}" class="btn btn-success">edit</a></td>
-                           <td><a th:href="@{delesupprimer(id=${p.id},Motcle=${Motcle},
+                           <td sec:authorize="hasRole('ROLE_ADMIN')">
+                           <a th:href="@{Update(id=${p.id})}" class="btn btn-success">edit</a></td>
+                           <td sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{delesupprimer(id=${p.id},Motcle=${Motcle},
                            page=${currentPage},size=${size})}" class="btn btn-danger">delete</a></td>
                            
                       </tr>

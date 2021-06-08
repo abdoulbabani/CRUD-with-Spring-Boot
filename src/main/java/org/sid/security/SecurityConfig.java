@@ -1,5 +1,6 @@
 package org.sid.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,37 +10,45 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	
-	
-	 @Override
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		 
-		 PasswordEncoder passwordEncoder=passwordEncoder();
-		
-		 auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder.encode("1234")).roles("user");
-		 auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder.encode("1234")).roles("user");
-		 auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder.encode("1234")).roles("user","ADMIN");
-		 
-		 
+
+		PasswordEncoder passwordEncoder = passwordEncoder();
+
+		auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder.encode("1234")).roles("user");
+		auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder.encode("1234")).roles("user");
+		auth.inMemoryAuthentication().withUser("user3").password(passwordEncoder.encode("1234")).roles("user", "ADMIN");
+
 	}
 
-	 
-	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		 http.formLogin(); 
-		http.authorizeRequests().antMatchers("/save**/**","/delesupprimer**/**").hasRole("ADMIN");
+
+		http.formLogin();
+		http.authorizeRequests().antMatchers("/save**/**", "/delesupprimer**/**", "/Ajouter**/**").hasRole("ADMIN");
 		http.authorizeRequests().anyRequest().authenticated();
 		http.csrf();
+
+		/* utiliser cette methode pour afficher les pages par defaut */
+
+		http.exceptionHandling().accessDeniedPage("/notAuthorized");
 	}
+
 	
+	/*
+	 * la classe new BCryptPasswordEncoder() return un objet de type PasswordEncoder
+	 * qui possede une methode encode() pour coder le mot de pass avant la
+	 * 
+	 * sauvegarde et l utilisation de BEAN veut dir qu on pourrait utiliser cette
+	 * objet dans d autres class de l apllication apres l insjection de @Autowired
+	 */
+	  
+	 
 	@Bean
-	
-	public PasswordEncoder passwordEncoder()
-	{
+
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
